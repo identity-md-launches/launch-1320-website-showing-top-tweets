@@ -1,0 +1,252 @@
+{
+  "url": "/preview/",
+  "browser": "141.0.7390.37",
+  "checks": [
+    "relative assets, metadata, font, and first five posts load at /preview/",
+    "no horizontal overflow: 1440px",
+    "seven computed foreground/background and control-boundary contrast pairs",
+    "rendered hero text/background contrast: 1440px",
+    "axe: desktop feed",
+    "load more reveals the remaining three posts and terminates",
+    "Latest and Discussion reorder the actual posts",
+    "axe: search empty state",
+    "combined topic/search filtering and empty-state recovery",
+    "bookmark add, route, reload persistence, removal, and empty recovery",
+    "topics navigation opens a filtered collection",
+    "copy writes the original X URL to the clipboard",
+    "axe: about dialog",
+    "native modal focus, containment, Escape, and focus return",
+    "keyboard skip, main action, search, and clear",
+    "no horizontal overflow: 390px",
+    "390px first-screen product and primary action (button bottom 381px)",
+    "axe: 390px feed",
+    "rendered hero text/background contrast: 390px",
+    "mobile primary interaction and bookmarks",
+    "no horizontal overflow: 320px",
+    "axe: 320px feed",
+    "rendered hero text/background contrast: 320px",
+    "no horizontal overflow: 760px",
+    "no horizontal overflow: 900px",
+    "no horizontal overflow: 1100px",
+    "no horizontal overflow: 1280px",
+    "no horizontal overflow: 390px at 200% text size",
+    "reduced-motion preference removes interaction transitions",
+    "corrupt bookmark storage recovers without crashing",
+    "blocked storage retains session bookmarks and explains the limit",
+    "clipboard denial exposes a selectable link and dismiss control",
+    "external-link destinations and no console/resource failures"
+  ],
+  "axe": [
+    {
+      "label": "desktop feed",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 5
+        }
+      ]
+    },
+    {
+      "label": "search empty state",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 5
+        }
+      ]
+    },
+    {
+      "label": "about dialog",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 6
+        }
+      ]
+    },
+    {
+      "label": "390px feed",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 6
+        }
+      ]
+    },
+    {
+      "label": "320px feed",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 6
+        }
+      ]
+    }
+  ],
+  "contrast": [
+    {
+      "label": "Post title",
+      "foreground": "rgb(234, 240, 223)",
+      "background": "rgb(16, 30, 22)",
+      "ratio": 14.79,
+      "threshold": 4.5
+    },
+    {
+      "label": "Secondary metadata",
+      "foreground": "rgb(160, 175, 152)",
+      "background": "rgb(16, 30, 22)",
+      "ratio": 7.45,
+      "threshold": 4.5
+    },
+    {
+      "label": "Editorial summary",
+      "foreground": "rgb(185, 197, 177)",
+      "background": "rgb(16, 30, 22)",
+      "ratio": 9.58,
+      "threshold": 4.5
+    },
+    {
+      "label": "Primary action",
+      "foreground": "rgb(11, 23, 17)",
+      "background": "rgb(197, 239, 119)",
+      "ratio": 13.96,
+      "threshold": 4.5
+    },
+    {
+      "label": "Search boundary, inner edge",
+      "foreground": "rgb(96, 121, 90)",
+      "background": "rgb(16, 30, 22)",
+      "ratio": 3.59,
+      "threshold": 3
+    },
+    {
+      "label": "Search boundary, outer edge",
+      "foreground": "rgb(96, 121, 90)",
+      "background": "rgb(11, 23, 17)",
+      "ratio": 3.83,
+      "threshold": 3
+    },
+    {
+      "label": "Secondary text, raised panel",
+      "foreground": "rgb(160, 175, 152)",
+      "background": "rgb(20, 34, 25)",
+      "ratio": 7.14,
+      "threshold": 4.5
+    }
+  ],
+  "heroContrast": [
+    {
+      "label": "1440px",
+      "selector": ".hero-pill",
+      "foreground": "rgb(209, 228, 190)",
+      "threshold": 4.5,
+      "sampledPixels": 689,
+      "minimumRatio": 10.73
+    },
+    {
+      "label": "1440px",
+      "selector": "#hero-title",
+      "foreground": "rgb(234, 240, 223)",
+      "threshold": 3,
+      "sampledPixels": 8559,
+      "minimumRatio": 12.44
+    },
+    {
+      "label": "1440px",
+      "selector": "#hero-title span",
+      "foreground": "rgb(197, 239, 119)",
+      "threshold": 3,
+      "sampledPixels": 4021,
+      "minimumRatio": 11.03
+    },
+    {
+      "label": "1440px",
+      "selector": ".hero p",
+      "foreground": "rgb(184, 199, 170)",
+      "threshold": 4.5,
+      "sampledPixels": 2263,
+      "minimumRatio": 8.14
+    },
+    {
+      "label": "390px",
+      "selector": ".hero-pill",
+      "foreground": "rgb(209, 228, 190)",
+      "threshold": 4.5,
+      "sampledPixels": 806,
+      "minimumRatio": 10.73
+    },
+    {
+      "label": "390px",
+      "selector": "#hero-title",
+      "foreground": "rgb(234, 240, 223)",
+      "threshold": 3,
+      "sampledPixels": 3669,
+      "minimumRatio": 12.44
+    },
+    {
+      "label": "390px",
+      "selector": "#hero-title span",
+      "foreground": "rgb(197, 239, 119)",
+      "threshold": 3,
+      "sampledPixels": 1708,
+      "minimumRatio": 11.03
+    },
+    {
+      "label": "390px",
+      "selector": ".hero p",
+      "foreground": "rgb(184, 199, 170)",
+      "threshold": 4.5,
+      "sampledPixels": 2835,
+      "minimumRatio": 8.14
+    },
+    {
+      "label": "320px",
+      "selector": ".hero-pill",
+      "foreground": "rgb(209, 228, 190)",
+      "threshold": 4.5,
+      "sampledPixels": 806,
+      "minimumRatio": 10.73
+    },
+    {
+      "label": "320px",
+      "selector": "#hero-title",
+      "foreground": "rgb(234, 240, 223)",
+      "threshold": 3,
+      "sampledPixels": 3669,
+      "minimumRatio": 12.44
+    },
+    {
+      "label": "320px",
+      "selector": "#hero-title span",
+      "foreground": "rgb(197, 239, 119)",
+      "threshold": 3,
+      "sampledPixels": 1708,
+      "minimumRatio": 11.03
+    },
+    {
+      "label": "320px",
+      "selector": ".hero p",
+      "foreground": "rgb(184, 199, 170)",
+      "threshold": 4.5,
+      "sampledPixels": 2835,
+      "minimumRatio": 8.14
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "docs/screenshots/desktop.jpg",
+    "docs/screenshots/bookmarks.jpg",
+    "docs/screenshots/about.jpg",
+    "docs/screenshots/keyboard-focus.jpg",
+    "docs/screenshots/mobile.jpg",
+    "docs/screenshots/mobile-320.jpg",
+    "docs/screenshots/tablet.jpg",
+    "docs/screenshots/text-enlargement.jpg",
+    "docs/screenshots/forced-colors.jpg"
+  ]
+}

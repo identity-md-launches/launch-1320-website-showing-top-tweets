@@ -1,0 +1,245 @@
+{
+  "method": "Conservative uncompressed sum of all deliverable files, including this manifest; excludes network-owned .git/.github/.imd and disposable test/scratch. No ignore file was changed. The actual Git pack may be smaller.",
+  "limitBytes": 8388608,
+  "checks": [
+    "Delivered dist is byte-identical to the final browser-tested production build",
+    "All delivered web source/config/test files match the checked build workspace",
+    "Relative HTML/CSS asset URLs resolve; title, description, favicon, OG metadata present",
+    "Social image is a real 1200x630 PNG and font is genuine WOFF2",
+    "Package manifest and lockfile agree on every exact dependency version",
+    "Every displayed post count/date/source matches the recorded capture; avatars resolve",
+    "Final browser report has 33 passes, 5 zero-violation axe scans, and 9 actual screenshots",
+    "Required documentation and referenced local evidence paths exist",
+    "No repository dependency/cache directories, archives, or symlinks/submodule trees in deliverables"
+  ],
+  "fileCountIncludingManifest": 46,
+  "conservativeTotalBytes": 2034371,
+  "distBytes": 632585,
+  "filesExcludingThisManifest": [
+    {
+      "path": "DESIGN.md",
+      "bytes": 11601,
+      "sha256": "e1e325ae390b851d3e60cc3cbe0bf1edee69815da5a72947670d0b4084405e9c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7343,
+      "sha256": "e004772908c3b3cd97a7f4e46048803ac8e859342204b30b0914dea75a055e7f"
+    },
+    {
+      "path": "dist/art/favicon.svg",
+      "bytes": 597,
+      "sha256": "2e2210b5c22ba815c53f9cbc43ea44e1929e0116a0beb11d61043bcd8b3ceef9"
+    },
+    {
+      "path": "dist/art/pepe-squad.svg",
+      "bytes": 6270,
+      "sha256": "71ee3c7274aa73420e9033103f7ac9e67427f19f44df6fda1726574d9b99f3a2"
+    },
+    {
+      "path": "dist/art/social-card.png",
+      "bytes": 317813,
+      "sha256": "21f6b16ee13e2fc695c3a6c51330461afbe068c626a1ea08c36cd49e09281a77"
+    },
+    {
+      "path": "dist/assets/index-Czn0rVTJ.css",
+      "bytes": 28990,
+      "sha256": "05a8cc384e23292562b72c351ce506b720ee7d0d353984dd31829349a0cd96bc"
+    },
+    {
+      "path": "dist/assets/index-DPpUa8gu.js",
+      "bytes": 231304,
+      "sha256": "275e0b6b0ddd208106c80d8994fa84b2556f857c376f897fc5458fbb03c9e4b1"
+    },
+    {
+      "path": "dist/assets/manrope-latin-DHIcAJRg.woff2",
+      "bytes": 24836,
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
+    },
+    {
+      "path": "dist/avatars/LastToSign.jpg",
+      "bytes": 9784,
+      "sha256": "66bcec47b9aea1a2e8328c5781f67c8275aabc9f638f15b48feb2046714210d0"
+    },
+    {
+      "path": "dist/avatars/surfcoderepeat.jpg",
+      "bytes": 11346,
+      "sha256": "5ce477c4d784eac7babdffaa4f3cfca8b7bd06aaf78a5cea99961bc4653a9687"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 1645,
+      "sha256": "117a7108b935aa5ec28470971c10a55fdce46e6622ab015a08c9277c050d0eb8"
+    },
+    {
+      "path": "docs/THIRD_PARTY.md",
+      "bytes": 2690,
+      "sha256": "32c8145317a65f88e31ba3d045d3e23e982f71b9f6b49c2f965e5b3bdf163efa"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "bytes": 12666,
+      "sha256": "b33641cb9e3aca8444f867adb657119c9bba4a38bb92b1c883d06afeb9b972ca"
+    },
+    {
+      "path": "docs/browser-results.json",
+      "bytes": 6625,
+      "sha256": "1c537ec0e92437b66c1bea540791174aa7481b1ef4514648d032eabfdf308ddc"
+    },
+    {
+      "path": "docs/design-guidance-LICENSE.txt",
+      "bytes": 11964,
+      "sha256": "97042f2887a04fc6c26967568cee2a17b3229d0f7e5e3c0b0ac877bef6932c39"
+    },
+    {
+      "path": "docs/screenshots/about.jpg",
+      "bytes": 93322,
+      "sha256": "9146aa373a898740da81f74b65a1a0bb2d8a755e72f3d4a8b5d6cbb392bbca57"
+    },
+    {
+      "path": "docs/screenshots/bookmarks.jpg",
+      "bytes": 121706,
+      "sha256": "e094b8c36d4914e08e4ccce967810880194cc8acabdeaa2e127c411affc0ddcd"
+    },
+    {
+      "path": "docs/screenshots/desktop.jpg",
+      "bytes": 144986,
+      "sha256": "14fc9523f293d7e431d741770a509eb7d12e94f235f14ab657e7e1158d0608dc"
+    },
+    {
+      "path": "docs/screenshots/forced-colors.jpg",
+      "bytes": 50094,
+      "sha256": "67f16c2ced31fa74147786a3da32cef6d0c7ca8a458d9d39980804a468b66ecd"
+    },
+    {
+      "path": "docs/screenshots/keyboard-focus.jpg",
+      "bytes": 153701,
+      "sha256": "f91ad9e55fbdf93c48c64ca72bede91529f185b2cd60cf19eff57c8769608de7"
+    },
+    {
+      "path": "docs/screenshots/mobile-320.jpg",
+      "bytes": 50059,
+      "sha256": "88b478b0290ddbd3d1d3a3cacfb7c82babe673c5e14f6c878384bcb0470e015f"
+    },
+    {
+      "path": "docs/screenshots/mobile.jpg",
+      "bytes": 40809,
+      "sha256": "75453beb004d291253c62591d03879f17fa0195a8d146bf485a0d560e93140ba"
+    },
+    {
+      "path": "docs/screenshots/tablet.jpg",
+      "bytes": 102349,
+      "sha256": "3b4f77567759b5a88c0d418ae75f59ced97fb903a72a9ab375475e5aa225adfd"
+    },
+    {
+      "path": "docs/screenshots/text-enlargement.jpg",
+      "bytes": 49984,
+      "sha256": "009556cba81028ad2f06bbc7ec04bd4a3241354d677cfde8bc9be3c84bc532f2"
+    },
+    {
+      "path": "docs/source-capture.json",
+      "bytes": 2885,
+      "sha256": "b9c43a7032b219cccc6bc778bf582be8279fbf76b4a320c9c1defe296ba97ea7"
+    },
+    {
+      "path": "web/index.html",
+      "bytes": 1545,
+      "sha256": "d222e5a45660fe8be37bc1748eca6448d134c4720dc736806cc010ecafc6f2a8"
+    },
+    {
+      "path": "web/package-lock.json",
+      "bytes": 64018,
+      "sha256": "d25b2aff26f02a332f124555ab86f8d65bf21919df4624d754343aae79072da1"
+    },
+    {
+      "path": "web/package.json",
+      "bytes": 797,
+      "sha256": "d8ed824a5efc7ef0fe2932adfa874bf57b1a592318e1af6925921915e7b0b0fe"
+    },
+    {
+      "path": "web/public/art/favicon.svg",
+      "bytes": 597,
+      "sha256": "2e2210b5c22ba815c53f9cbc43ea44e1929e0116a0beb11d61043bcd8b3ceef9"
+    },
+    {
+      "path": "web/public/art/pepe-squad.svg",
+      "bytes": 6270,
+      "sha256": "71ee3c7274aa73420e9033103f7ac9e67427f19f44df6fda1726574d9b99f3a2"
+    },
+    {
+      "path": "web/public/art/social-card.png",
+      "bytes": 317813,
+      "sha256": "21f6b16ee13e2fc695c3a6c51330461afbe068c626a1ea08c36cd49e09281a77"
+    },
+    {
+      "path": "web/public/avatars/LastToSign.jpg",
+      "bytes": 9784,
+      "sha256": "66bcec47b9aea1a2e8328c5781f67c8275aabc9f638f15b48feb2046714210d0"
+    },
+    {
+      "path": "web/public/avatars/surfcoderepeat.jpg",
+      "bytes": 11346,
+      "sha256": "5ce477c4d784eac7babdffaa4f3cfca8b7bd06aaf78a5cea99961bc4653a9687"
+    },
+    {
+      "path": "web/scripts/make-social.mjs",
+      "bytes": 2181,
+      "sha256": "8f2e4bff4c8ff2916be0737b0f00a3779fe2c1f71a0924a20856bef276701532"
+    },
+    {
+      "path": "web/scripts/validate-browser.mjs",
+      "bytes": 18636,
+      "sha256": "b668e3d777558e780b5bdfdcfb700b20ec13c10e665e0cfa371c4dcccfb36e3e"
+    },
+    {
+      "path": "web/src/App.tsx",
+      "bytes": 22597,
+      "sha256": "654efb3e607f01def56d531023aec7260206fb827e1bbd812ec2c2897fba6b9c"
+    },
+    {
+      "path": "web/src/feed.ts",
+      "bytes": 2006,
+      "sha256": "3521e213effae2ea6a9a1c88224d07fed1a6395e6c9a2e70ef56a758f1c68830"
+    },
+    {
+      "path": "web/src/fonts/OFL.txt",
+      "bytes": 4387,
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b"
+    },
+    {
+      "path": "web/src/fonts/manrope-latin.woff2",
+      "bytes": 24836,
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
+    },
+    {
+      "path": "web/src/main.tsx",
+      "bytes": 229,
+      "sha256": "40bd8ffd705d808794b368adbc065c541ef5e76fb648cd7298ea6289acd5578a"
+    },
+    {
+      "path": "web/src/posts.json",
+      "bytes": 6264,
+      "sha256": "38b59c1fec15851db10b59781192ee7e7b31da15e365555e46d7d257f942e700"
+    },
+    {
+      "path": "web/src/styles.css",
+      "bytes": 33062,
+      "sha256": "0885d17545316301dc0bd4195f0ff0cd5122186aa3aeaf57bef3bf6aaa855ed0"
+    },
+    {
+      "path": "web/tests/feed.test.ts",
+      "bytes": 3574,
+      "sha256": "6b1fb86c237cd0cc306a43ec30edf7f260d44872306acc3406a3d4845108c3e0"
+    },
+    {
+      "path": "web/tsconfig.json",
+      "bytes": 449,
+      "sha256": "25c4520ac4d83d21ca588c8f941dfe3e0b1247f1bbb5490f40dc8e104b55e5bd"
+    },
+    {
+      "path": "web/vite.config.ts",
+      "bytes": 219,
+      "sha256": "77cbc76f5420e375405ac1eecad55605284b920974f4a85b98a8aef16ad0066b"
+    }
+  ]
+}
