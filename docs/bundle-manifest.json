@@ -1,30 +1,31 @@
 {
-  "method": "Conservative uncompressed sum of all deliverable files, including this manifest; excludes network-owned .git/.github/.imd and disposable test/scratch. No ignore file was changed. The actual Git pack may be smaller.",
+  "method": "Conservative uncompressed sum of deliverable files, including this manifest. Excludes network-owned .git/.github/.imd, disposable test/scratch and the .imd-responses.json envelope consumed by the worker. No ignore file changed. Actual Git pack may be smaller.",
   "limitBytes": 8388608,
   "checks": [
-    "Delivered dist is byte-identical to the final browser-tested production build",
+    "Delivered dist matches the final browser-tested production build byte-for-byte",
     "All delivered web source/config/test files match the checked build workspace",
-    "Relative HTML/CSS asset URLs resolve; title, description, favicon, OG metadata present",
-    "Social image is a real 1200x630 PNG and font is genuine WOFF2",
-    "Package manifest and lockfile agree on every exact dependency version",
-    "Every displayed post count/date/source matches the recorded capture; avatars resolve",
-    "Final browser report has 33 passes, 5 zero-violation axe scans, and 9 actual screenshots",
-    "Required documentation and referenced local evidence paths exist",
-    "No repository dependency/cache directories, archives, or symlinks/submodule trees in deliverables"
+    "Relative HTML/CSS assets resolve; title, description, favicon and OG metadata present",
+    "Social image is a real 1200x630 PNG; bundled font is genuine WOFF2",
+    "Package manifest and lockfile agree on all exact dependency versions",
+    "Original post dataset, source capture, illustrations, social card and font are unchanged",
+    "Final browser report has 46 passes, 5 zero-violation axe scans and 10 actual screenshots",
+    "390x844 first quotation and source action fit above fold; route/focus and three-weight checks pass",
+    "Five exact revision finding IDs have fixed responses in the workflow envelope",
+    "No dependency/cache directories, unnecessary archives, symlinks or submodule trees in deliverables"
   ],
-  "fileCountIncludingManifest": 46,
-  "conservativeTotalBytes": 2034371,
-  "distBytes": 632585,
+  "fileCountIncludingManifest": 48,
+  "conservativeTotalBytes": 2152723,
+  "distBytes": 630947,
   "filesExcludingThisManifest": [
     {
       "path": "DESIGN.md",
-      "bytes": 11601,
-      "sha256": "e1e325ae390b851d3e60cc3cbe0bf1edee69815da5a72947670d0b4084405e9c"
+      "bytes": 12718,
+      "sha256": "1f517fa4c7d4a1d4737817866baf2d626f4ca98460623d2984db87b5d76535f7"
     },
     {
       "path": "README.md",
-      "bytes": 7343,
-      "sha256": "e004772908c3b3cd97a7f4e46048803ac8e859342204b30b0914dea75a055e7f"
+      "bytes": 8152,
+      "sha256": "2bf510e688b8c328962d142b99dcc8c3f3125c0a71bd2388082fdd7ed02197b6"
     },
     {
       "path": "dist/art/favicon.svg",
@@ -42,14 +43,14 @@
       "sha256": "21f6b16ee13e2fc695c3a6c51330461afbe068c626a1ea08c36cd49e09281a77"
     },
     {
-      "path": "dist/assets/index-Czn0rVTJ.css",
-      "bytes": 28990,
-      "sha256": "05a8cc384e23292562b72c351ce506b720ee7d0d353984dd31829349a0cd96bc"
+      "path": "dist/assets/index-BJ3ExWPQ.css",
+      "bytes": 27778,
+      "sha256": "3568059b72d1823d530c356ec7a9dec5cc30e1025b1f3dc04b63698fc20da0a2"
     },
     {
-      "path": "dist/assets/index-DPpUa8gu.js",
-      "bytes": 231304,
-      "sha256": "275e0b6b0ddd208106c80d8994fa84b2556f857c376f897fc5458fbb03c9e4b1"
+      "path": "dist/assets/index-BQnF5VR5.js",
+      "bytes": 230878,
+      "sha256": "3e6a71dc0ec2aefd19c97a2eb436204d2361f3aa37bd4c310c8dd75dec2713bb"
     },
     {
       "path": "dist/assets/manrope-latin-DHIcAJRg.woff2",
@@ -69,7 +70,7 @@
     {
       "path": "dist/index.html",
       "bytes": 1645,
-      "sha256": "117a7108b935aa5ec28470971c10a55fdce46e6622ab015a08c9277c050d0eb8"
+      "sha256": "5dd71e87f58d1590ef50c20af63bae5523cc6251b90655d5f86f1e68aa3d3944"
     },
     {
       "path": "docs/THIRD_PARTY.md",
@@ -78,13 +79,13 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 12666,
-      "sha256": "b33641cb9e3aca8444f867adb657119c9bba4a38bb92b1c883d06afeb9b972ca"
+      "bytes": 13120,
+      "sha256": "6e4f58276a8a0ce9f9a81faeb6ebf79bb4ba86e1d6a84bf9dec76b432933a638"
     },
     {
       "path": "docs/browser-results.json",
-      "bytes": 6625,
-      "sha256": "1c537ec0e92437b66c1bea540791174aa7481b1ef4514648d032eabfdf308ddc"
+      "bytes": 8308,
+      "sha256": "c12aaffd30bff5b6173265fa510da2fbf9367e4d23a7260be8f7f8b45ef512c1"
     },
     {
       "path": "docs/design-guidance-LICENSE.txt",
@@ -92,49 +93,59 @@
       "sha256": "97042f2887a04fc6c26967568cee2a17b3229d0f7e5e3c0b0ac877bef6932c39"
     },
     {
+      "path": "docs/revision-before.json",
+      "bytes": 2808,
+      "sha256": "1fbf17148f46281aac188cf4b12d02dc8737dc8068ff97d7badb1f7aaa3cb210"
+    },
+    {
       "path": "docs/screenshots/about.jpg",
-      "bytes": 93322,
-      "sha256": "9146aa373a898740da81f74b65a1a0bb2d8a755e72f3d4a8b5d6cbb392bbca57"
+      "bytes": 91299,
+      "sha256": "dff9f90f2c8409a5b799db8ad3eecc777361c3949d32cdc130d61f40ab21b49e"
     },
     {
       "path": "docs/screenshots/bookmarks.jpg",
-      "bytes": 121706,
-      "sha256": "e094b8c36d4914e08e4ccce967810880194cc8acabdeaa2e127c411affc0ddcd"
+      "bytes": 121834,
+      "sha256": "50c1e656d275898d0cd1ec7e046d699642b2760d3b7d31e53a6ae903c4b31b54"
     },
     {
       "path": "docs/screenshots/desktop.jpg",
-      "bytes": 144986,
-      "sha256": "14fc9523f293d7e431d741770a509eb7d12e94f235f14ab657e7e1158d0608dc"
+      "bytes": 142463,
+      "sha256": "a20a2aba59d6d9e8aaaf5b23fe0a4e04ec9067984e087f9db4b373eae7922cd2"
     },
     {
       "path": "docs/screenshots/forced-colors.jpg",
-      "bytes": 50094,
-      "sha256": "67f16c2ced31fa74147786a3da32cef6d0c7ca8a458d9d39980804a468b66ecd"
+      "bytes": 56193,
+      "sha256": "de2c1993c412a700b07c958be014f3f1ae1d7b2922b30c73327e1434407ccf43"
     },
     {
       "path": "docs/screenshots/keyboard-focus.jpg",
-      "bytes": 153701,
-      "sha256": "f91ad9e55fbdf93c48c64ca72bede91529f185b2cd60cf19eff57c8769608de7"
+      "bytes": 163212,
+      "sha256": "ea4001dcdc7a7e7d3116aa38f96de1ba7a1ff3e94f0de9b41c9699718bc38600"
     },
     {
       "path": "docs/screenshots/mobile-320.jpg",
-      "bytes": 50059,
-      "sha256": "88b478b0290ddbd3d1d3a3cacfb7c82babe673c5e14f6c878384bcb0470e015f"
+      "bytes": 55392,
+      "sha256": "8f24363e71a02653fd3519ba46604b048c07db0387b38f5a3be243ebc4daf395"
     },
     {
       "path": "docs/screenshots/mobile.jpg",
-      "bytes": 40809,
-      "sha256": "75453beb004d291253c62591d03879f17fa0195a8d146bf485a0d560e93140ba"
+      "bytes": 45415,
+      "sha256": "e625129882b5ac1c47c4a780b8e877ed0c1d31e6ccf02a10c8db2598e7e07b82"
     },
     {
       "path": "docs/screenshots/tablet.jpg",
-      "bytes": 102349,
-      "sha256": "3b4f77567759b5a88c0d418ae75f59ced97fb903a72a9ab375475e5aa225adfd"
+      "bytes": 99712,
+      "sha256": "183312a3ddfb382025998eb9cc7d3ecca44a1dd8ac935e37e86838c5245fd1ca"
     },
     {
       "path": "docs/screenshots/text-enlargement.jpg",
-      "bytes": 49984,
-      "sha256": "009556cba81028ad2f06bbc7ec04bd4a3241354d677cfde8bc9be3c84bc532f2"
+      "bytes": 49758,
+      "sha256": "3098a3b4515862d8f565a2fc902b7ee342d469b195b6fb61a90f32cd99e9c3c2"
+    },
+    {
+      "path": "docs/screenshots/topics-navigation.jpg",
+      "bytes": 89849,
+      "sha256": "7b5b4fc6c2e49bda44087c164f457d994edeb4f1d6331e401e2974f6c0283688"
     },
     {
       "path": "docs/source-capture.json",
@@ -188,13 +199,13 @@
     },
     {
       "path": "web/scripts/validate-browser.mjs",
-      "bytes": 18636,
-      "sha256": "b668e3d777558e780b5bdfdcfb700b20ec13c10e665e0cfa371c4dcccfb36e3e"
+      "bytes": 24456,
+      "sha256": "c15ddd301bf1bca1433a1964e51fb456e2190243bb4cefdb72efd5a6c10ad719"
     },
     {
       "path": "web/src/App.tsx",
-      "bytes": 22597,
-      "sha256": "654efb3e607f01def56d531023aec7260206fb827e1bbd812ec2c2897fba6b9c"
+      "bytes": 22620,
+      "sha256": "5bd284271a0c0515c8bcbb520314df274a4348e37de8aeee094741400bd02f82"
     },
     {
       "path": "web/src/feed.ts",
@@ -223,8 +234,8 @@
     },
     {
       "path": "web/src/styles.css",
-      "bytes": 33062,
-      "sha256": "0885d17545316301dc0bd4195f0ff0cd5122186aa3aeaf57bef3bf6aaa855ed0"
+      "bytes": 31715,
+      "sha256": "7b2773916b650d9b93b3e4f6f6fe206b4fc46d047aa8462465a6977125e53f2f"
     },
     {
       "path": "web/tests/feed.test.ts",

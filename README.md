@@ -38,27 +38,29 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The script starts its own temporary HTTP server, serves the actual export under `/preview/`, opens Chromium, tests the site, writes screenshots/results into `docs/`, and closes both browser and server. It does not depend on a separately running preview. Browser installation requires a download once and the usual Chromium system libraries. `PLAYWRIGHT_BROWSERS_PATH` can select an existing installation.
+The script starts its own temporary HTTP server, serves the actual export under `/preview/`, opens Chromium, tests the site, writes screenshots/results into `docs/`, and closes both browser and server. It does not depend on a separately running preview. Browser installation requires a download once and the usual Chromium system libraries. `PLAYWRIGHT_BROWSERS_PATH` can select an existing installation; `PLAYWRIGHT_CHROMIUM_EXECUTABLE` can select an installed Chromium executable directly.
 
 To regenerate the social preview from the bundled vector illustration and font, run `npm run generate:social`, then rebuild. The supplied 1200×630 PNG is already ready to use.
 
 ## Actual validation
 
-The task prohibited modifying repository `node_modules/`, so dependencies and checks ran in a source-identical build workspace at `/tmp/imd-pond-build/web`, with npm and browser caches also under `/tmp`. The tested export was copied byte-for-byte into this repository; no dependency/cache directories were created here.
+The task prohibited modifying repository `node_modules/`, so dependencies and checks ran in a source-identical build workspace at `/tmp/imd-pond-revision/web`, with npm and browser caches also under `/tmp`. The tested export was copied byte-for-byte into this repository; no dependency/cache directories were created here.
 
 | Command/check | Recorded result |
 | --- | --- |
-| `npm ci --offline --cache /tmp/imd-pond-npm-cache --no-audit --no-fund` | Passed; 75 packages installed from the lockfile/cache |
+| `npm ci --offline --cache /tmp/imd-pond-revision-cache --no-audit --no-fund` | Passed; 75 packages installed from the lockfile/cache |
 | `npm run typecheck` | Passed; no TypeScript errors |
 | `npm test` | Passed; 8 tests covering real-data rankings, combined filters, bookmark normalization, and provenance |
 | `npm run build` | Passed; Vite production export generated, with relative asset URLs |
-| `PLAYWRIGHT_BROWSERS_PATH=/tmp/imd-pond-browsers npm run test:browser` | Passed; 33 checks, no console errors or failed resources |
-| Axe 4.11, Chromium 141 | Zero automated violations in desktop/mobile feeds, empty search, and about dialog; manual-review items remain documented |
-| Responsive rendering | Checked at 320, 390, 760, 900, 1100, 1280, and 1440 CSS px; no horizontal document overflow |
-| 390px first screen | Product heading and primary action visible; action ends at y=381px in an 844px viewport |
+| `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/opt/imd-tools/ms-playwright/chromium_headless_shell-1246/chrome-headless-shell-linux64/chrome-headless-shell npm run test:browser` | Passed; 46 checks, no console errors or failed resources |
+| Axe 4.11, Chromium 154.0.8037.0 | Zero automated violations in desktop/mobile feeds, empty search, and about dialog; manual-review items remain documented |
+| Responsive rendering | Checked at 320, 390, 520, 521, 760, 900, 1100, 1280, and 1440 CSS px; no horizontal document overflow |
+| 390px first screen | Full first quotation at y=747.72–824.50 and Read on X at y=653.72–697.72, with scrollY=0 in a 390×844 viewport |
 | Text enlargement and preferences | 200% root text size reflows; reduced-motion and forced-colors modes checked |
 
-The supplied browser connector returned `Transport closed`; local Playwright Chromium provided the rendered checks instead. These are worker-run results, not independent certification. Native browser zoom, screen-reader sessions, physical devices, Safari/Firefox, and live X sign-in/availability were not tested. Full coverage, measured contrast, fixes, and remaining limitations are in **[docs/VALIDATION.md](docs/VALIDATION.md)** and **[docs/browser-results.json](docs/browser-results.json)**.
+All five revision findings reproduced and were fixed: the phone feed begins sooner, source links sit in the author row, Skip to content preserves the selected task, page changes reset scroll/focus, the redundant sidebar slogans are removed, and text uses three weights. [Before measurements](docs/revision-before.json), per-finding responses in `.imd-responses.json`, and the validation report record the evidence.
+
+The supplied browser connector returned `Transport closed`; local Playwright Chromium provided the rendered checks instead. These are worker-run results, not independent certification. Native browser zoom, screen-reader sessions, physical devices, Safari/Firefox, and live X sign-in/availability were not tested. The original-post keyboard test intercepts only the external destination to verify its exact new-tab URL; application links remain ordinary external anchors. Full coverage, measured contrast, fixes, and remaining limitations are in **[docs/VALIDATION.md](docs/VALIDATION.md)** and **[docs/browser-results.json](docs/browser-results.json)**.
 
 ## What the feed represents
 

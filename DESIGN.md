@@ -4,7 +4,7 @@
 
 The Pond is an independent reading room for the identity.md community. The visual direction follows the brief: dark forest green, pale lime, and Pepe-inspired frogs equipped with AI chips, headsets, and computers. The custom, code-native illustration lives in `web/public/art/pepe-squad.svg`; it is decorative brand artwork rather than post media.
 
-The feed is the primary surface. Desktop uses a navigation sidebar, a reading column, and a supporting collection rail. A short four-word hero introduces the product and offers “Explore the feed.” On phones, the navigation becomes a compact top row and the supporting rail is removed. The artwork is placed below mobile hero text so it does not reduce reading contrast.
+The feed is the primary surface. Desktop uses a navigation sidebar, a reading column, and a supporting collection rail. A short four-word hero introduces the product. Above 520px it offers “Explore the feed.” On phones, the navigation becomes a compact top row and the supporting rail is removed. At 520px and below, the hero omits its kicker and jump button so the first tweet and its “Read on X” link fit on the opening 390×844 screen. The cropped mobile artwork uses a strong green overlay behind the text.
 
 Source of truth: `web/src/styles.css`, `web/src/App.tsx`, `web/src/feed.ts`, and the local assets. This document describes the shipped implementation, not a proposed system. Rendered evidence is linked from `docs/VALIDATION.md`.
 
@@ -32,13 +32,13 @@ The interface uses hexadecimal primitives and role-based custom properties in `s
 | `--color-feature-text` / `--color-feature-muted` | `#c4dc9e` / `#acbd9f` | Ribbon label / explanation |
 | `--color-tag-text` / `--color-link` | `#b8cda3` / `#c5d6b4` | Topic-tag text / post source link |
 
-The secondary illustrated rail note intentionally uses a compact olive treatment (`.pepe-note`: background `#22331e`, border `#394a2d`, title `#d3e3b5`, paragraph `#aabd91`, footer `#b0c197`). These decorative values and the SVG’s colors are local to the illustration; do not reuse them as control text tokens. Avatars have a translucent white outline. There is no unused warning or danger palette.
+The SVG’s colors stay local to the illustration. On phones, `.hero-content` uses `linear-gradient(90deg, #192e1c 30%, #192e1ccc 100%)` to keep the description readable over the cropped illustration. Avatars have a translucent white outline. There is no unused warning or danger palette.
 
-The measured opaque text pairs range from 7.14:1 to 14.79:1 in the recorded set. Primary button text is 13.96:1. The search border is 3.59:1 against its inner surface and 3.83:1 against the page. The final hero description measures at least 8.14:1 at the three sampled widths. Full foreground/background values and methodology are in `docs/browser-results.json`; these measurements are not a certification of every possible pixel/state.
+The measured opaque text pairs range from 7.14:1 to 14.79:1 in the recorded set. Primary button text is 13.96:1. The search border is 3.59:1 against its inner surface and 3.83:1 against the page. The final hero description is pixel-sampled at desktop and phone widths; current measurements are in the validation report. Full foreground/background values and methodology are in `docs/browser-results.json`; these measurements are not a certification of every possible pixel/state.
 
 ## Typography
 
-One family: **Manrope**, then Arial and sans-serif. `web/src/fonts/manrope-latin.woff2` is a locally bundled variable WOFF2 covering weights 200–800; the interface uses 400, 500, 600, 650, 700, and 800. Only normal style is used. `font-display: swap` is set, and font synthesis is disabled. Chromium confirmed the font loaded. The OFL license is adjacent to the font.
+One family: **Manrope**, then Arial and sans-serif. `web/src/fonts/manrope-latin.woff2` is a locally bundled variable WOFF2 covering weights 200–800; the interface uses three weights: 400 for prose, quotations and the hero label; 600 for section headings, controls and metadata; and 700 for titles, the headline and the wordmark. Only normal style is used. `font-display: swap` is set, and font synthesis is disabled. Chromium confirmed the font loaded. The OFL license is adjacent to the font.
 
 Exactly six size tokens:
 
@@ -64,10 +64,10 @@ The app shell has a 1600px maximum width and a 232px sidebar. Main content has 3
 | ≤1300px | Sidebar 210px; main inset 26px; rail 244px; less important view metric/date-range text hidden |
 | ≤1100px | Sidebar 192px; supporting rail removed; feed uses the available width |
 | ≤760px | Sidebar becomes horizontal top navigation; topic links and sidebar note removed; icon navigation retains accessible names; larger touch targets and 16px inputs |
-| ≤520px | 16px main inset; 28px hero title; 278px minimum hero height; cropped artwork at the lower trailing edge; wrapping topic filters; metrics/actions split into separate rows |
+| ≤520px | 16px main inset; 28px hero title; content-sized hero (`min-height: 0`) with 12px × 20px content padding; kicker and jump button hidden; cropped artwork with a green scrim; wrapping topic filters; metrics/actions split into separate rows |
 | ≤360px | 12px main inset; compact navigation; heading can wrap; artwork moves farther toward the trailing edge |
 
-Filter controls wrap rather than hiding in an unmarked scroller. The hero uses minimum height, so enlarged text can grow its container. Images have declared dimensions. Feed and app grid children use `min-width: 0`; summaries and query text can wrap long input. At 390×844 the main action ends at y=381px. Browser checks found no horizontal document overflow at 320, 390, 760, 900, 1100, 1280, or 1440px, or at 390px with 200% root text size. Browser-native zoom was not tested.
+Filter controls wrap rather than hiding in an unmarked scroller. The hero grows with enlarged text; on phones its content alone determines the height. Images have declared dimensions. Feed and app grid children use `min-width: 0`; summaries and query text can wrap long input. At 390×844 and scrollY=0, the first source link occupies y=653.72–697.72 and the complete first quotation occupies y=747.72–824.50. Browser checks found no horizontal document overflow at 320, 390, 520, 521, 760, 900, 1100, 1280, or 1440px, or at 390px with 200% root text size. Browser-native zoom was not tested.
 
 ## Elevation & Depth
 
@@ -83,13 +83,13 @@ Radius tokens: 8px controls, 12px cards, and 18px hero/dialog. Mobile hero uses 
 
 All UI patterns are in `web/src/App.tsx`, with classes in `styles.css`; this is a small application, not a published component library.
 
-- **`PostCard`**: accepts `post`, `rank`, `saved`, callbacks for save/copy/topic, and `copied`/`featured` states. Shows attributed short quotations, an explicitly labeled editorial summary, fixed snapshot counts, and native source links. Save is a button with `aria-pressed`; metrics are static, not fake engagement actions.
+- **`PostCard`**: accepts `post`, `rank`, `saved`, callbacks for save/copy/topic, and `copied`/`featured` states. Shows attributed short quotations, an explicitly labeled editorial summary, fixed snapshot counts, and one native “Read on X” link in the author row. That source action follows the date and uses auto inline-start margin; the row wraps when needed. Copy and save remain in the footer. Save is a button with `aria-pressed`; metrics are static, not fake engagement actions.
 - **`Avatar`**: local author image or a neutral leaf fallback; small and regular variants. The adjacent author text supplies identity, so the image alt is empty.
 - **`ExternalLink`**: real anchors support ordinary browser link behavior, use `noopener noreferrer`, and announce opening a new tab. Original source links are not intercepted.
-- **Navigation**: hash anchors with `aria-current`. Desktop labels become accessible icon links on mobile. Topic buttons open the feed with that topic selected and move focus to the feed section.
+- **Navigation**: hash anchors with `aria-current`. Desktop labels become accessible icon links on mobile. A page change, including hash navigation, scrolls to the top and focuses `main` after rendering. Initial loading leaves the skip link first in the keyboard order. Skip to content scrolls and focuses that same main without changing the hash, query or topic. Topic buttons still open the chosen filtered feed and deliberately scroll/focus its section.
 - **Sort and topic groups**: native pressed buttons. Active sort has an underline; active topics have a changed border and surface. Color is not the sole state indicator.
 - **Search**: an actual labeled `type="search"` field with a persistent magnifier affordance and a named clear control. The wrapper gets a visible focus ring. Search combines terms, author handles, topic, and bookmarks; result count is a polite live region.
-- **Primary/secondary actions**: `.primary-button` is reserved for “Explore the feed.” `.secondary-button` provides contextual recovery from empty states. Hover effects are enabled only for hover-capable devices.
+- **Primary/secondary actions**: `.primary-button` is reserved for the desktop/tablet “Explore the feed” jump. On small phones, the first article’s source link is the reading action; the redundant jump is hidden. `.secondary-button` provides contextual recovery from empty states. Hover effects are enabled only for hover-capable devices.
 - **Empty and failure states**: empty bookmarks offer the feed; no matches names the query and offers clearing filters. Blocked storage shows an inline explanation and keeps session state. Failed copying exposes a labeled, selectable URL.
 - **About dialog**: native `<dialog>` opened with `showModal()`. Initial focus goes to close; Escape and close restore focus. The page becomes inert. A native details/summary exposes per-post original and metadata sources.
 - **Toast**: stable `role="status"` region for nonessential save/copy confirmations. It has no action and expires after four seconds; persistent failures stay visible beside their recovery control.
@@ -99,11 +99,11 @@ The shared focus indicator is a 2px lime outline, offset 4px; search uses a 3px 
 ## Do’s and Don’ts
 
 - Start a related view inside the existing shell, use one descriptive h1, and reuse the feed/section spacing.
-- Keep one filled primary action in a view. Use quiet links and outlined or tonal secondary actions elsewhere.
-- Use semantic color tokens for interface roles. Keep illustrated colors inside artwork and decorative notes.
+- Keep primary emphasis on reading: the desktop hero has one filled jump action; small phones present the tweet and its source link directly. Use quiet links and outlined or tonal secondary actions elsewhere.
+- Use semantic color tokens for interface roles. Keep illustrated colors inside artwork.
 - Add records to `posts.json`, keeping original URLs, capture provenance, and honest short summaries. Reuse `filterPosts`; do not add a second sorting implementation.
 - Preserve local asset URLs, hash routes, and local bookmark behavior. Do not introduce runtime font/CDN dependencies or imply a live X connection.
-- Keep the small-screen artwork below the hero description; the previous overlap failed measured contrast at 320px.
+- Keep the compact hero’s green scrim: the shorter hero brings artwork behind its description, and the old transparent gradient failed measured contrast. Recheck rendered text/background pairs before altering it.
 - Preserve accessible names, live updates, native controls, and reduced-motion behavior when extending components. Do not replace links with clickable containers.
 
 For another collection view: add a route in `App`, reuse `.page-intro` and `.content-grid`, render existing `PostCard` instances, add a native hash navigation link, and update tests and documentation for the new behavior.

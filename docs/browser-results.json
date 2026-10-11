@@ -1,30 +1,43 @@
 {
   "url": "/preview/",
-  "browser": "141.0.7390.37",
+  "browser": "154.0.8037.0",
   "checks": [
     "relative assets, metadata, font, and first five posts load at /preview/",
     "no horizontal overflow: 1440px",
     "seven computed foreground/background and control-boundary contrast pairs",
     "rendered hero text/background contrast: 1440px",
+    "three rendered text weights: 1440px",
     "axe: desktop feed",
+    "navigation starts at top and focuses main: desktop link from scrolled feed",
+    "navigation starts at top and focuses main: browser Back to feed",
+    "navigation starts at top and focuses main: browser Forward to topics",
+    "navigation starts at top and focuses main: hash-driven bookmarks from scrolled feed",
     "load more reveals the remaining three posts and terminates",
     "Latest and Discussion reorder the actual posts",
     "axe: search empty state",
     "combined topic/search filtering and empty-state recovery",
     "bookmark add, route, reload persistence, removal, and empty recovery",
-    "topics navigation opens a filtered collection",
+    "topics navigation retains its deliberate scroll and focus to the filtered collection",
     "copy writes the original X URL to the clipboard",
     "axe: about dialog",
     "native modal focus, containment, Escape, and focus return",
     "keyboard skip, main action, search, and clear",
     "no horizontal overflow: 390px",
-    "390px first-screen product and primary action (button bottom 381px)",
+    "390px first-screen excerpt and Read on X (bottoms 825px / 698px)",
     "axe: 390px feed",
     "rendered hero text/background contrast: 390px",
+    "three rendered text weights: 390px",
+    "mobile Read on X opens the exact original URL by keyboard (destination intercepted)",
+    "keyboard skip preserves #saved and focuses its main content",
+    "keyboard skip preserves #topics and focuses its main content",
+    "skip preserves search, topic and results on #feed",
+    "skip preserves search, topic and results on #saved",
     "mobile primary interaction and bookmarks",
     "no horizontal overflow: 320px",
     "axe: 320px feed",
     "rendered hero text/background contrast: 320px",
+    "no horizontal overflow: 520px",
+    "no horizontal overflow: 521px",
     "no horizontal overflow: 760px",
     "no horizontal overflow: 900px",
     "no horizontal overflow: 1100px",
@@ -73,7 +86,7 @@
       "incomplete": [
         {
           "id": "color-contrast",
-          "nodes": 6
+          "nodes": 4
         }
       ]
     },
@@ -83,7 +96,7 @@
       "incomplete": [
         {
           "id": "color-contrast",
-          "nodes": 6
+          "nodes": 4
         }
       ]
     }
@@ -145,7 +158,7 @@
       "selector": ".hero-pill",
       "foreground": "rgb(209, 228, 190)",
       "threshold": 4.5,
-      "sampledPixels": 689,
+      "sampledPixels": 657,
       "minimumRatio": 10.73
     },
     {
@@ -174,14 +187,6 @@
     },
     {
       "label": "390px",
-      "selector": ".hero-pill",
-      "foreground": "rgb(209, 228, 190)",
-      "threshold": 4.5,
-      "sampledPixels": 806,
-      "minimumRatio": 10.73
-    },
-    {
-      "label": "390px",
       "selector": "#hero-title",
       "foreground": "rgb(234, 240, 223)",
       "threshold": 3,
@@ -201,16 +206,8 @@
       "selector": ".hero p",
       "foreground": "rgb(184, 199, 170)",
       "threshold": 4.5,
-      "sampledPixels": 2835,
-      "minimumRatio": 8.14
-    },
-    {
-      "label": "320px",
-      "selector": ".hero-pill",
-      "foreground": "rgb(209, 228, 190)",
-      "threshold": 4.5,
-      "sampledPixels": 806,
-      "minimumRatio": 10.73
+      "sampledPixels": 2834,
+      "minimumRatio": 6.72
     },
     {
       "label": "320px",
@@ -233,13 +230,62 @@
       "selector": ".hero p",
       "foreground": "rgb(184, 199, 170)",
       "threshold": 4.5,
-      "sampledPixels": 2835,
-      "minimumRatio": 8.14
+      "sampledPixels": 2829,
+      "minimumRatio": 6.19
+    }
+  ],
+  "navigation": [
+    {
+      "label": "desktop link from scrolled feed",
+      "hash": "#topics",
+      "scrollY": 0,
+      "focus": "main",
+      "headingTop": 170
+    },
+    {
+      "label": "browser Back to feed",
+      "hash": "",
+      "scrollY": 0,
+      "focus": "main",
+      "headingTop": 182
+    },
+    {
+      "label": "browser Forward to topics",
+      "hash": "#topics",
+      "scrollY": 0,
+      "focus": "main",
+      "headingTop": 170
+    },
+    {
+      "label": "hash-driven bookmarks from scrolled feed",
+      "hash": "#saved",
+      "scrollY": 0,
+      "focus": "main",
+      "headingTop": 170
+    }
+  ],
+  "typography": [
+    {
+      "label": "1440px",
+      "weights": [
+        "400",
+        "600",
+        "700"
+      ]
+    },
+    {
+      "label": "390px",
+      "weights": [
+        "400",
+        "600",
+        "700"
+      ]
     }
   ],
   "errors": [],
   "screenshots": [
     "docs/screenshots/desktop.jpg",
+    "docs/screenshots/topics-navigation.jpg",
     "docs/screenshots/bookmarks.jpg",
     "docs/screenshots/about.jpg",
     "docs/screenshots/keyboard-focus.jpg",
@@ -248,5 +294,23 @@
     "docs/screenshots/tablet.jpg",
     "docs/screenshots/text-enlargement.jpg",
     "docs/screenshots/forced-colors.jpg"
-  ]
+  ],
+  "firstScreen": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actionBox": {
+      "x": 285,
+      "y": 653.71875,
+      "width": 72,
+      "height": 44
+    },
+    "excerptBox": {
+      "x": 33,
+      "y": 747.71875,
+      "width": 324,
+      "height": 76.78125
+    }
+  }
 }

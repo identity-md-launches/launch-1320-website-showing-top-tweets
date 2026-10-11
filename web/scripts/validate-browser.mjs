@@ -24,10 +24,10 @@ const server = createServer(async (request, response) => {
 });
 await new Promise(done => server.listen(0, '127.0.0.1', done));
 const url = `http://127.0.0.1:${server.address().port}/preview/`;
-const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
+const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || undefined, headless: true, args: ['--no-sandbox'] });
 const errors = [];
 const checks = [];
-const report = { url: '/preview/', browser: await browser.version(), checks, axe: [], contrast: [], heroContrast: [], errors, screenshots: [] };
+const report = { url: '/preview/', browser: await browser.version(), checks, axe: [], contrast: [], heroContrast: [], navigation: [], typography: [], errors, screenshots: [] };
 function passed(name) { checks.push(name); console.log(`PASS ${name}`); }
 
 try {
@@ -54,11 +54,25 @@ try {
     assert.ok(dimensions.scroll <= dimensions.width, `${label} overflow: ${JSON.stringify(dimensions)}`);
     passed(`no horizontal overflow: ${label}`);
   }
+  async function checkWeights(label) {
+    const weights = await page.locator('body *').evaluateAll(elements => [...new Set(elements.filter(element => element.checkVisibility() && [...element.childNodes].some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim())).map(element => getComputedStyle(element).fontWeight))].sort());
+    report.typography.push({ label, weights });
+    assert.deepEqual(weights, ['400', '600', '700']);
+    passed(`three rendered text weights: ${label}`);
+  }
+  async function expectPageStart(label, heading) {
+    await page.waitForFunction(expected => document.querySelector('h1')?.textContent === expected && scrollY === 0 && document.activeElement?.id === 'main', heading);
+    const state = await page.evaluate(() => ({ hash: location.hash, scrollY, focus: document.activeElement?.id, headingTop: document.querySelector('h1').getBoundingClientRect().top }));
+    assert.ok(state.headingTop >= 0 && state.headingTop < 900);
+    report.navigation.push({ label, ...state });
+    passed(`navigation starts at top and focuses main: ${label}`);
+  }
   async function measureHero(label) {
     // Isolate glyph pixels by comparing the rendered hero with the same text
     // transparent. Sample the real background at each changed pixel, including
     // the illustration and gradient; compare with the specified full text color.
     for (const [selector, threshold] of [['.hero-pill', 4.5], ['#hero-title', 3], ['#hero-title span', 3], ['.hero p', 4.5]]) {
+      if (!(await page.locator(selector).isVisible())) continue;
       const foreground = await page.locator(selector).evaluate(element => getComputedStyle(element).color);
       const before = PNG.sync.read(await page.locator('.hero').screenshot());
       const style = await page.addStyleTag({ content: `${selector}, ${selector} * { color: transparent !important; text-shadow: none !important; }` });
@@ -101,7 +115,7 @@ try {
       ['Primary action', color('.primary-button', 'color'), color('.primary-button', 'backgroundColor'), 4.5],
       ['Search boundary, inner edge', color('.search-box', 'borderTopColor'), color('.search-box', 'backgroundColor'), 3],
       ['Search boundary, outer edge', color('.search-box', 'borderTopColor'), color(':root', 'backgroundColor'), 3],
-      ['Secondary text, raised panel', color('.collection-card > p', 'color'), color('.collection-card', 'backgroundColor'), 4.5],
+      ['Secondary text, raised panel', color('.collection-stats > span', 'color'), color('.collection-card', 'backgroundColor'), 4.5],
     ];
   });
   function luminance(rgb) {
@@ -121,7 +135,26 @@ try {
     await capture('mobile.jpg');
   } else {
     await measureHero('1440px');
+    await checkWeights('1440px');
     await audit('desktop feed');
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.evaluate(() => window.scrollTo(0, 1500));
+    assert.equal(await page.evaluate(() => scrollY), 1500);
+    await page.locator('.main-nav').getByRole('link', { name: 'Explore topics', exact: true }).click();
+    await expectPageStart('desktop link from scrolled feed', 'Follow your curiosity.');
+    await capture('topics-navigation.jpg');
+    await page.goBack();
+    await expectPageStart('browser Back to feed', 'Good signal.Great frens.');
+    await page.evaluate(() => window.scrollTo(0, 1500));
+    await page.goForward();
+    await expectPageStart('browser Forward to topics', 'Follow your curiosity.');
+    await page.locator('.main-nav').getByRole('link', { name: /The feed/ }).click();
+    await page.evaluate(() => window.scrollTo(0, 1500));
+    await page.evaluate(() => { location.hash = '#saved'; });
+    await expectPageStart('hash-driven bookmarks from scrolled feed', 'Worth another read.');
+    await page.locator('.main-nav').getByRole('link', { name: /The feed/ }).click();
+    await page.setViewportSize({ width: 1440, height: 1080 });
     await page.getByRole('button', { name: 'Show 3 more posts', exact: true }).click();
     assert.equal(await page.locator('article').count(), 8);
     assert.ok(await page.getByText('You’re all caught up with this collection.').isVisible());
@@ -168,7 +201,10 @@ try {
     await page.locator('.topic-card').filter({ has: page.getByRole('heading', { name: 'AI agents' }) }).click();
     assert.equal(await page.locator('article').count(), 3);
     assert.equal(await page.locator('.filter-chip.active').innerText(), 'AI agents');
-    passed('topics navigation opens a filtered collection');
+    await page.waitForFunction(() => document.activeElement?.classList.contains('feed-column'));
+    const topicTarget = await page.locator('.feed-column').boundingBox();
+    assert.ok(Math.abs(topicTarget.y - 22) < 1);
+    passed('topics navigation retains its deliberate scroll and focus to the filtered collection');
 
     await page.locator('.main-nav').getByRole('link', { name: /The feed/ }).click();
     await page.getByRole('button', { name: 'Copy link to A software factory, powered by agents', exact: true }).click();
@@ -211,14 +247,58 @@ try {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(url, { waitUntil: 'networkidle' });
     await noOverflow('390px');
-    const actionBox = await page.getByRole('button', { name: 'Explore the feed', exact: true }).boundingBox();
-    assert.ok(actionBox.y + actionBox.height < 844);
+    await page.evaluate(() => document.fonts.ready);
+    assert.equal(await page.evaluate(() => scrollY), 0);
+    const actionBox = await page.locator('article .read-post').first().boundingBox();
+    const excerptBox = await page.locator('article blockquote').first().boundingBox();
+    assert.ok(actionBox.y >= 0 && actionBox.y + actionBox.height <= 844);
+    assert.ok(excerptBox.y >= 0 && excerptBox.y + excerptBox.height <= 844);
     assert.ok(await page.getByRole('heading', { level: 1 }).isVisible());
-    passed(`390px first-screen product and primary action (button bottom ${Math.round(actionBox.y + actionBox.height)}px)`);
+    report.firstScreen = { viewport: { width: 390, height: 844 }, actionBox, excerptBox };
+    passed(`390px first-screen excerpt and Read on X (bottoms ${Math.round(excerptBox.y + excerptBox.height)}px / ${Math.round(actionBox.y + actionBox.height)}px)`);
     await capture('mobile.jpg');
     await audit('390px feed');
     await measureHero('390px');
-    await page.getByRole('button', { name: 'Explore the feed', exact: true }).click();
+    await checkWeights('390px');
+    // Intercept only the external test tab: verify real anchor behavior without
+    // making claims about X sign-in or live post availability.
+    await context.route('https://x.com/**', route => route.fulfill({ contentType: 'text/html', body: '<title>Original post test destination</title>' }));
+    const original = page.locator('article .read-post').first();
+    await original.focus();
+    const [originalTab] = await Promise.all([page.waitForEvent('popup'), page.keyboard.press('Enter')]);
+    await originalTab.waitForURL('https://x.com/surfcoderepeat/status/2105853348188459389', { waitUntil: 'domcontentloaded' });
+    assert.equal(originalTab.url(), 'https://x.com/surfcoderepeat/status/2105853348188459389');
+    await originalTab.close();
+    passed('mobile Read on X opens the exact original URL by keyboard (destination intercepted)');
+
+    for (const route of ['saved', 'topics']) {
+      await page.goto(`${url}#${route}`, { waitUntil: 'networkidle' });
+      await page.reload();
+      await page.keyboard.press('Tab');
+      assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Skip to content');
+      await page.keyboard.press('Enter');
+      assert.equal(await page.evaluate(() => document.activeElement?.id), 'main');
+      assert.equal(await page.evaluate(() => location.hash), `#${route}`);
+      assert.equal(await page.locator('h1').textContent(), route === 'saved' ? 'Worth another read.' : 'Follow your curiosity.');
+      if (route === 'topics') assert.equal(await page.locator('.topic-card').count(), 4);
+      passed(`keyboard skip preserves #${route} and focuses its main content`);
+    }
+    // Skip must preserve the active task on both searchable routes as well.
+    for (const route of ['feed', 'saved']) {
+      await page.goto(`${url}#${route}`, { waitUntil: 'networkidle' });
+      await page.getByRole('searchbox').fill('agents');
+      await page.locator('.topic-filters').getByRole('button', { name: 'AI agents', exact: true }).click();
+      const beforeIds = await page.locator('article').evaluateAll(elements => elements.map(element => element.id));
+      await page.locator('.skip-link').focus();
+      await page.keyboard.press('Enter');
+      assert.equal(await page.evaluate(() => location.hash), `#${route}`);
+      assert.equal(await page.evaluate(() => document.activeElement?.id), 'main');
+      assert.equal(await page.getByRole('searchbox').inputValue(), 'agents');
+      assert.equal(await page.locator('.filter-chip.active').textContent(), 'AI agents');
+      assert.deepEqual(await page.locator('article').evaluateAll(elements => elements.map(element => element.id)), beforeIds);
+      passed(`skip preserves search, topic and results on #${route}`);
+    }
+    await page.goto(url, { waitUntil: 'networkidle' });
     await page.getByRole('searchbox').fill('pegzeus');
     assert.equal(await page.locator('article').count(), 1);
     await page.getByRole('button', { name: 'Save A company without a company', exact: true }).click();
@@ -226,7 +306,7 @@ try {
     assert.equal(await page.locator('article').count(), 1);
     passed('mobile primary interaction and bookmarks');
 
-    for (const width of [320, 760, 900, 1100, 1280]) {
+    for (const width of [320, 520, 521, 760, 900, 1100, 1280]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(url, { waitUntil: 'networkidle' });
       await noOverflow(`${width}px`);
@@ -244,7 +324,7 @@ try {
     assert.equal(transition, '0s');
     passed('reduced-motion preference removes interaction transitions');
     await page.emulateMedia({ forcedColors: 'active' });
-    await page.getByRole('button', { name: 'Explore the feed', exact: true }).focus();
+    await page.locator('article .read-post').first().focus();
     await capture('forced-colors.jpg');
     await page.emulateMedia({ reducedMotion: 'no-preference', forcedColors: 'none' });
 

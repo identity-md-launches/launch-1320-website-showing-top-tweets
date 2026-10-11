@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Bookmark, Check, ChevronDown, Code2,
   Compass, Cpu, Eye, Flame, Hash, Heart, Info, Leaf, Link2, MessageCircle,
@@ -44,7 +44,7 @@ function PostCard({ post, rank, saved, onSave, onCopy, onTopic, copied, featured
           <Avatar post={post} /><span className="author-details"><strong>{post.author}</strong><span>@{post.handle}</span></span>
         </ExternalLink>
         <time dateTime={new Date(post.publishedAt).toISOString()} title={new Date(post.publishedAt).toUTCString()}>{dateLabel(post.publishedAt)}</time>
-        <span className="x-mark" aria-hidden="true">𝕏</span>
+        <ExternalLink href={post.url} className="read-post" label={`Read ${post.title} on X`}>Read on X<ArrowUpRight size={15} aria-hidden="true" /></ExternalLink>
       </div>
       <div className="post-copy">
         <h3 id={`title-${post.id}`}>{post.title}</h3>
@@ -62,7 +62,6 @@ function PostCard({ post, rank, saved, onSave, onCopy, onTopic, copied, featured
         <div className="post-actions">
           <button className={`icon-button ${copied ? 'is-saved' : ''}`} title="Copy original post link" aria-label={`Copy link to ${post.title}`} onClick={() => onCopy(post)}>{copied ? <Check /> : <Link2 />}</button>
           <button className={`icon-button ${saved ? 'is-saved' : ''}`} title={saved ? 'Remove saved post' : 'Save post'} aria-pressed={saved} aria-label={`${saved ? 'Unsave' : 'Save'} ${post.title}`} onClick={() => onSave(post)}><Bookmark fill={saved ? 'currentColor' : 'none'} /></button>
-          <ExternalLink href={post.url} className="read-post" label={`Read ${post.title} on X`}>Read on X<ArrowUpRight size={15} aria-hidden="true" /></ExternalLink>
         </div>
       </div>
     </div>
@@ -84,6 +83,8 @@ export function App() {
   const [copied, setCopied] = useState('');
   const [copyFallback, setCopyFallback] = useState('');
   const [about, setAbout] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+  const previousPage = useRef(page);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const feedRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -99,6 +100,13 @@ export function App() {
     window.addEventListener('storage', syncSaved);
     return () => { window.removeEventListener('hashchange', onHash); window.removeEventListener('storage', syncSaved); clearTimeout(noticeTimer.current); };
   }, []);
+
+  useLayoutEffect(() => {
+    if (previousPage.current === page) return;
+    previousPage.current = page;
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    mainRef.current?.focus({ preventScroll: true });
+  }, [page]);
 
   useEffect(() => {
     if (about) { lastFocus.current = document.activeElement as HTMLElement; dialogRef.current?.showModal(); }
@@ -141,9 +149,14 @@ export function App() {
   function jumpToFeed() {
     feedRef.current?.scrollIntoView({ block: 'start' }); searchRef.current?.focus({ preventScroll: true });
   }
+  function skipToContent(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    mainRef.current?.scrollIntoView({ block: 'start' });
+    mainRef.current?.focus({ preventScroll: true });
+  }
 
   return <>
-    <a className="skip-link" href="#main">Skip to content</a>
+    <a className="skip-link" href="#main" onClick={skipToContent}>Skip to content</a>
     <div className="app-shell">
       <aside className="sidebar">
         <a href="#feed" className="brand" onClick={() => navigate('feed')} aria-label="The Pond home"><img src="./art/favicon.svg" alt="" width="40" height="40" /><span>the pond<span className="brand-dot">.</span><small>an identity.md outpost</small></span></a>
@@ -156,15 +169,14 @@ export function App() {
           const Icon = topicIcons[item]; return <button key={item} onClick={() => chooseTopic(item)}><Icon size={17} /><span>{item}</span><ArrowUpRight size={13} /></button>;
         })}</div>
         <div className="sidebar-bottom">
-          <div className="community-note"><span className="mini-frog"><img src="./art/favicon.svg" alt="" width="30" height="30" /></span><strong>Built for curious frens.</strong><p>A little less noise.<br />A little more signal.</p><ExternalLink href="https://imd.fun" className="quiet-link">Discover identity.md<ArrowUpRight size={14} /></ExternalLink></div>
+          <div className="community-note"><span className="mini-frog"><img src="./art/favicon.svg" alt="" width="30" height="30" /></span><strong>Built for curious frens.</strong><ExternalLink href="https://imd.fun" className="quiet-link">Discover identity.md<ArrowUpRight size={14} /></ExternalLink></div>
           <button className="about-button" onClick={() => setAbout(true)}><Info size={17} />About this collection</button>
-          <p className="sidebar-credit">Independent. Community-minded.</p>
         </div>
       </aside>
 
       <div className="workspace">
         <header className="topbar"><div className="breadcrumb"><span>identity.md</span><span className="breadcrumb-slash">/</span><span>The conversation</span></div><div className="topbar-right"><span className="edition"><span className="status-dot" />Curated, not automated</span><ExternalLink className="x-link" href="https://x.com/search?q=%22identity.md%22%20OR%20%22imd.fun%22&src=typed_query" label="Search identity.md on X">𝕏<ArrowUpRight size={14} /></ExternalLink></div></header>
-        <main id="main" tabIndex={-1}>
+        <main id="main" ref={mainRef} tabIndex={-1}>
           {page === 'feed' && <section className="hero" aria-labelledby="hero-title">
             <div className="hero-content"><span className="hero-pill"><Sparkles size={14} />Pepes, armed with AI.</span><h1 id="hero-title">Good signal.<br /><span>Great frens.</span></h1><p>The top tweets, ideas, and builders<br className="desktop-break" /> around identity.md. All in one pond.</p><button className="primary-button" onClick={jumpToFeed}>Explore the feed<ArrowDown size={16} /></button></div>
             <img className="hero-art" src="./art/pepe-squad.svg" alt="Three Pepe-inspired frogs equipped with AI chips, headsets, and handheld computers." width="520" height="310" />
@@ -199,10 +211,9 @@ export function App() {
             </section>
 
             <aside className="right-rail" aria-label="More from the pond">
-              <section className="collection-card"><div className="rail-heading"><h2>The pond, at a glance</h2><Radar size={18} /></div><p>A small collection.<br />A bigger conversation.</p><div className="collection-stats"><span><strong>{posts.length}</strong>selected posts</span><span><strong>{authors.length}</strong>community voices</span></div><div className="snapshot-date"><span className="status-dot" />Collected {dateLabel(data.capturedAt)} 2026</div></section>
+              <section className="collection-card"><div className="rail-heading"><h2>The pond, at a glance</h2><Radar size={18} /></div><div className="collection-stats"><span><strong>{posts.length}</strong>selected posts</span><span><strong>{authors.length}</strong>community voices</span></div><div className="snapshot-date"><span className="status-dot" />Collected {dateLabel(data.capturedAt)} 2026</div></section>
               <section className="rail-section"><div className="rail-heading"><h2>Explore the conversation</h2><Hash size={17} /></div><div className="rail-topics">{topics.map((item, index) => <button key={item} onClick={() => chooseTopic(item)}><span className="topic-number">0{index + 1}</span><span><strong>{item}</strong><small>{posts.filter(post => post.topic === item).length} posts in this collection</small></span><ArrowUpRight size={16} /></button>)}</div></section>
               <section className="rail-section"><div className="rail-heading"><h2>Frens to know</h2><Users size={17} /></div><p className="rail-description">The voices in this collection.</p><div className="authors">{authors.map(post => <ExternalLink href={`https://x.com/${post.handle}`} className="author-row" key={post.handle} label={`${post.author} on X`}><Avatar post={post} small /><span><strong>{post.author}</strong><small>@{post.handle}</small></span><ArrowUpRight size={15} /></ExternalLink>)}</div></section>
-              <section className="pepe-note"><span className="note-sparkle">✳</span><h2>Small frogs.<br />Big ideas.</h2><p>Intelligence is better<br />when it’s shared.</p><img src="./art/favicon.svg" alt="" width="64" height="64" /><span className="pepe-note-bottom">See you around the pond.</span></section>
               <footer className="rail-footer"><button onClick={() => setAbout(true)}>About & sources</button><span>·</span><ExternalLink href="https://imd.fun">identity.md<ArrowUpRight size={12} /></ExternalLink><p>Made for the community, by the community.</p></footer>
             </aside>
           </div>

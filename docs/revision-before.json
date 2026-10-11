@@ -1,0 +1,134 @@
+{
+  "browser": "154.0.8037.0",
+  "mobile": {
+    "scrollY": 0,
+    "rectangles": {
+      ".hero": {
+        "x": 16,
+        "y": 131,
+        "width": 358,
+        "height": 278,
+        "top": 131,
+        "right": 374,
+        "bottom": 409,
+        "left": 16
+      },
+      "article": {
+        "x": 16,
+        "y": 729,
+        "width": 358,
+        "height": 504.28125,
+        "top": 729,
+        "right": 374,
+        "bottom": 1233.28125,
+        "left": 16
+      },
+      ".post-copy": {
+        "x": 33,
+        "y": 840,
+        "width": 324,
+        "height": 247.28125,
+        "top": 840,
+        "right": 357,
+        "bottom": 1087.28125,
+        "left": 33
+      },
+      ".post-copy blockquote": {
+        "x": 33,
+        "y": 874,
+        "width": 324,
+        "height": 76.78125,
+        "top": 874,
+        "right": 357,
+        "bottom": 950.78125,
+        "left": 33
+      },
+      ".read-post": {
+        "x": 285,
+        "y": 1181.28125,
+        "width": 72,
+        "height": 44,
+        "top": 1181.28125,
+        "right": 357,
+        "bottom": 1225.28125,
+        "left": 285
+      }
+    }
+  },
+  "mobileWeights": {
+    ".hero p": "400",
+    ".hero-pill": "500",
+    ".feed-tab.active": "600",
+    "#feed-title": "650",
+    "#hero-title": "700",
+    ".brand > span": "800"
+  },
+  "skip_saved": {
+    "before": {
+      "hash": "#saved",
+      "heading": "Worth another read.",
+      "focus": "",
+      "query": "agents",
+      "topic": "AI agents",
+      "articles": 0,
+      "topicCards": 0
+    },
+    "after": {
+      "hash": "#main",
+      "heading": "Good signal.Great frens.",
+      "focus": "main",
+      "query": "",
+      "topic": "All posts",
+      "articles": 5,
+      "topicCards": 0
+    }
+  },
+  "skip_topics": {
+    "before": {
+      "hash": "#topics",
+      "heading": "Follow your curiosity.",
+      "focus": "",
+      "articles": 0,
+      "topicCards": 4
+    },
+    "after": {
+      "hash": "#main",
+      "heading": "Good signal.Great frens.",
+      "focus": "main",
+      "query": "",
+      "topic": "All posts",
+      "articles": 5,
+      "topicCards": 0
+    }
+  },
+  "desktopWeights": {
+    ".hero p": "400",
+    ".hero-pill": "500",
+    ".feed-tab.active": "600",
+    "#feed-title": "650",
+    "#hero-title": "700",
+    ".brand > span": "800"
+  },
+  "slogans": [
+    "A little less noise.A little more signal.",
+    "Independent. Community-minded.",
+    "Good signal.Great frens.",
+    "A small collection.A bigger conversation.",
+    "Small frogs.Big ideas."
+  ],
+  "scrolledNavigation": {
+    "beforeScroll": 1500,
+    "scrollY": 582,
+    "heading": {
+      "x": 268,
+      "y": -412,
+      "width": 1136,
+      "height": 53.75,
+      "top": -412,
+      "right": 1404,
+      "bottom": -358.25,
+      "left": 268
+    },
+    "documentHeight": 1482
+  }
+}
